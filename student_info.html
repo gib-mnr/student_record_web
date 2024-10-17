@@ -1,0 +1,128 @@
+<?php
+// Include the database connection
+include 'db_connection.php';
+
+// Check if it's an edit operation
+$id = isset($_GET['id']) ? $_GET['id'] : '';
+$student = null;
+
+// If editing, fetch the student data based on the ID
+if ($id) {
+    $sql = "SELECT * FROM students WHERE id = $id";
+    $result = $conn->query($sql);
+    if ($result->num_rows == 1) {
+        $student = $result->fetch_assoc();
+    } else {
+        die("Student not found.");
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Info Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+/*      max-width: 400px;*/
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 16px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #4285f4;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #357ae8;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="studentForm" action="process_student.php" method="POST">
+    <h2><?php echo $id ? 'Edit Student Info' : 'Student Info Form'; ?></h2>
+
+    <!-- Hidden field to store the student ID for editing -->
+    <input type="hidden" name="id" value="<?php echo $id; ?>">
+
+    <!-- Input for Student Name -->
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Enter your name" value="<?php echo $student ? htmlspecialchars($student['name']) : ''; ?>" required>
+
+    <!-- Input for Email -->
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="Enter your email" value="<?php echo $student ? htmlspecialchars($student['email']) : ''; ?>" required>
+
+    <!-- Input for Phone Number -->
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" value="<?php echo $student ? htmlspecialchars($student['phone']) : ''; ?>" required>
+
+    <!-- Input for Social Media Links -->
+    <label for="facebook">Facebook URL</label>
+    <input type="url" id="facebook" name="facebook" placeholder="Facebook URL" value="<?php echo $student ? htmlspecialchars($student['facebook']) : ''; ?>">
+
+    <label for="twitter">Twitter URL</label>
+    <input type="url" id="twitter" name="twitter" placeholder="Twitter URL" value="<?php echo $student ? htmlspecialchars($student['twitter']) : ''; ?>">
+
+    <label for="linkedin">LinkedIn URL</label>
+    <input type="url" id="linkedin" name="linkedin" placeholder="LinkedIn URL" value="<?php echo $student ? htmlspecialchars($student['linkedin']) : ''; ?>">
+
+    <!-- Input for Date of Birth -->
+    <label for="dob">Date of Birth</label>
+    <input type="date" id="dob" name="dob" value="<?php echo $student ? htmlspecialchars($student['dob']) : ''; ?>" required>
+
+    <!-- Input for Address -->
+    <label for="address">Address</label>
+    <textarea id="address" name="address" placeholder="Enter your address" required><?php echo $student ? htmlspecialchars($student['address']) : ''; ?></textarea>
+
+    <!-- Submit Button -->
+    <button type="submit"><?php echo $id ? 'Update' : 'Submit'; ?></button>
+
+    <!-- Button to view students -->
+    <a href="view_students.php" class="view-button">View Students</a>
+  </form>
+
+</body>
+</html>
