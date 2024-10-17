@@ -1,0 +1,28 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main  # Triggers on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add cPanel server to known_hosts
+        run: |
+          ssh-keys can -H s1303.sgp1.mysecurecloudhost.com >> ~/.ssh/known_hosts
+
+      - name: Sync files to cPanel server
+        run: |
+          rsync -avz --delete --exclude '.git/' ./ \
+          mykidsko@s1303.sgp1.mysecurecloudhost.com:/home/mykidsko/learn.mykidskottage.com/ 
