@@ -1,11 +1,14 @@
 name: Deploy to cPanel
+
 on:
   push:
     branches:
       - main  # Triggers on push to the main branch
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -19,12 +22,12 @@ jobs:
         run: |
           ssh-keyscan -H s1303.sgp1.mysecurecloudhost.com >> ~/.ssh/known_hosts
 
-      # - name: Sync files to cPanel server
-      #   run: |
-      #     rsync -avzc --delete --exclude '.git/' \
-      #     -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-      #     ./ mykidsko@s1303.sgp1.mysecurecloudhost.com:/home/mykidsko/learn.mykidskottage.com/ \
-      #     || { echo "rsync failed"; exit 1; }
+      - name: Sync files to cPanel server
+        run: |
+          rsync -avzc --delete --exclude '.git/' \
+          -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+          ./ mykidsko@s1303.sgp1.mysecurecloudhost.com:/home/mykidsko/learn.mykidskottage.com/ \
+          || { echo "rsync failed"; exit 1; }
 
       - name: Verify deployment
         run: |
