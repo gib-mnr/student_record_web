@@ -13,10 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup SSH agent
+      - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.CPANEL_PRIVATE_KEY }} # Uses the secret added earlier
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add cPanel server to known_hosts
+        run: |
+          ssh-keys can -H s1303.sgp1.mysecurecloudhost.com >> ~/.ssh/known_hosts
 
       - name: Sync files to cPanel server
         run: |
