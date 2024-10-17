@@ -70,7 +70,7 @@ input, textarea {
 
   <!-- Form to save student information -->
   <!-- action="index.php" -->
-<form id="studentForm"  action="index.php" method="POST">
+<form id="studentForm"  action="add_student.php" method="POST">
     <h2>Student Info Form</h2>
     
     <!-- Input for Student Name -->
