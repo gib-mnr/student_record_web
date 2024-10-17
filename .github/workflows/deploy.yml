@@ -16,8 +16,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       
       - name: Add cPanel server to known_hosts
-        run: |
-          ssh-keyscan -H s1303.sgp1.mysecurecloudhost.com >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H s1303.sgp1.mysecurecloudhost.com >> ~/.ssh/known_hosts
       
       - name: Test SSH connection
         run: ssh -T mykidsko@s1303.sgp1.mysecurecloudhost.com || true
