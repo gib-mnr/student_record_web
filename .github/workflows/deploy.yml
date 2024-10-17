@@ -20,7 +20,7 @@ jobs:
 
       - name: Add cPanel server to known_hosts
         run: |
-          ssh-keys can -H s1303.sgp1.mysecurecloudhost.com >> ~/.ssh/known_hosts
+          ssh-keyscan -H s1303.sgp1.mysecurecloudhost.com >> ~/.ssh/known_hosts
 
       - name: Sync files to cPanel server
         run: |
